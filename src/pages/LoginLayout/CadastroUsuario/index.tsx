@@ -313,29 +313,6 @@ export const CadastroUsuario: React.FC = () => {
                 size="small"
               />
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="filial-select-label">Filial</InputLabel>
-                <Select
-                  {...register('branch')}
-                  labelId="filial-label-select"
-                  id="select"
-                  label="Filial"
-                  placeholder="Filial"
-                  value={branch}
-                  onChange={(e: SelectChangeEvent) =>
-                    setBranch(e.target.value as string)
-                  }
-                  error={!!errors.branch}
-                  disabled={isLoading}
-                  size="small"
-                >
-                  <MenuItem value={'vr'}>Volta Redonda</MenuItem>
-                  <MenuItem value={'sp'}>Guarulhos</MenuItem>
-                  <MenuItem value={'pn'}>Pinheiral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
           </Grid>
           <Grid
             container

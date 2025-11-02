@@ -7,28 +7,27 @@ import {
   Typography,
   Icon,
   Chip,
-  Tooltip,
   Badge,
   ListItemButton,
   Divider,
 } from '@mui/material'
-import Zoom from '@mui/material/Zoom'
+// import Zoom from '@mui/material/Zoom' // Removido
 import React, { memo } from 'react'
 
 import { FiPaperclip } from 'react-icons/fi'
-import { RiTimer2Line } from 'react-icons/ri'
+// import { RiTimer2Line } from 'react-icons/ri' // Removido
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom'
 
 import { format, formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { MdOutlineEmojiPeople } from 'react-icons/md'
-import { AiFillLike } from 'react-icons/ai'
-import { FaUserClock } from 'react-icons/fa'
+// import { MdOutlineEmojiPeople } from 'react-icons/md' // Removido
+// import { AiFillLike } from 'react-icons/ai' // Removido
+// import { FaUserClock } from 'react-icons/fa' // Removido
 
 export interface HelpDeskDataProps {
   id: string
   author: string
-  status: string
+  // status: string // Removido
   title: string
   category?: string
   description: string
@@ -47,7 +46,7 @@ const Chamado: React.FC<HelpDeskDataProps> = ({
   createdAt,
   title,
   onClick,
-  status,
+  // status, // Removido
   countFiles,
   to,
 }) => {
@@ -178,31 +177,9 @@ const Chamado: React.FC<HelpDeskDataProps> = ({
                   ID:
                   {id}
                 </Typography>
-                <Tooltip
-                  TransitionComponent={Zoom}
-                  arrow
-                  title={
-                    status === 'Em Andamento'
-                      ? 'Em andamento'
-                      : status === 'Concluído'
-                      ? 'Concluído'
-                      : status === 'Aberto'
-                      ? 'Aberto'
-                      : 'Aguardando Terceiro'
-                  }
-                >
-                  <Icon color="secondary" sx={{ marginBottom: '4px' }}>
-                    {status === 'Concluído' ? (
-                      <AiFillLike size={20} />
-                    ) : status === 'Em Andamento' ? (
-                      <MdOutlineEmojiPeople size={20} />
-                    ) : status === 'Aberto' ? (
-                      <RiTimer2Line size={20} />
-                    ) : (
-                      <FaUserClock size={20} />
-                    )}
-                  </Icon>
-                </Tooltip>
+                
+                {/* Bloco de Tooltip e Icon de status removido daqui */}
+                
               </Box>
             </Box>
           </Box>

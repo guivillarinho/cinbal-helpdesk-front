@@ -26,7 +26,7 @@ interface HelpDeskDashboardList {
 }
 
 export const CardHelpDesksAssumidos: React.FC = () => {
-  const { data } = useFetch('http://apihd.cinbal.com.br/helpdesk')
+  const { data } = useFetch('http://apihd.totvs.com.br/helpdesk')
   const { user } = useUserContext()
   const [searchTextField, setSearchTextField] = useState('')
 

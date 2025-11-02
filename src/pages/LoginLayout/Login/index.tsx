@@ -105,9 +105,11 @@ export const Login: React.FC = () => {
       padding={'20px'}
       gap={'20px'}
       boxSizing={'border-box'}
+      marginBottom={'500px'}
       sx={{
         [theme.breakpoints.down('sm')]: {
           width: '100%',
+          marginTop: '250px',
         },
       }}
     >
@@ -119,8 +121,8 @@ export const Login: React.FC = () => {
         alignItems={'center'}
         gap={2}
       >
-        {/* <img src={logo} height={60} alt="Cinbal App" /> */}
-        <Typography>Bem vindo(a) ao seu HelpDesk!</Typography>
+        {/* <img src={logo} height={60} alt="Totvs App" /> */}
+        <Typography>Bem vindo(a) ao seu Time Tracker!</Typography>
       </Box>
 
       <form

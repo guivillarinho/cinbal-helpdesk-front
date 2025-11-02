@@ -169,7 +169,7 @@ export const ListagemDeChamados: React.FC = () => {
 
   return (
     <DefaultLayout
-      tituloPagina={'Portal de Chamados'}
+      tituloPagina={'Time Tracker'}
       mostrarTituloPagina={true}
       mostrarBotaoTema={false}
       barraDeFerramentas={

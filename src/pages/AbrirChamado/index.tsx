@@ -154,7 +154,7 @@ export const AbrirChamado: React.FC = () => {
 
   return (
     <DefaultLayout
-      tituloPagina="Abrir Chamado"
+      tituloPagina="Cadastrar Tarefa"
       mostrarBotaoLogout
       mostrarBotaoPerfil
       mostrarBotaoTema
@@ -224,19 +224,10 @@ export const AbrirChamado: React.FC = () => {
                     error={!!errors.category}
                     fullWidth
                   >
-                    <MenuItem value={'Email'}>Email</MenuItem>
-                    <MenuItem value={'Ramal'}>Ramal</MenuItem>
-                    <MenuItem value={'Rede'}>Rede</MenuItem>
+                    <MenuItem value={'senha'}>Trocar senha</MenuItem>
+                    <MenuItem value={'att'}>Atualização Fluig</MenuItem>
+                    <MenuItem value={'logs'}>Envio de logs</MenuItem>
                     <MenuItem value={'Fluig'}>Fluig</MenuItem>
-                    <MenuItem value={'Hardware'}>Hardware</MenuItem>
-                    <MenuItem value={'Software'}>Software</MenuItem>
-                    <MenuItem value={'PcFactory'}>PcFactory</MenuItem>
-                    <MenuItem value={'Preactor'}>Preactor</MenuItem>
-                    <MenuItem value={'Protheus'}>Protheus</MenuItem>
-                    <MenuItem value={'Vexon'}>Vexon</MenuItem>
-                    <MenuItem value={'PortalDoCliente'}>
-                      Portal do Cliente
-                    </MenuItem>
                     <MenuItem value={'Outros'}>Outros</MenuItem>
                   </Select>
                 </FormControl>
@@ -352,7 +343,7 @@ export const AbrirChamado: React.FC = () => {
                   ) : undefined
                 }
               >
-                {isLoading ? 'Enviando...' : 'Enviar Chamado'}
+                {isLoading ? 'Enviando...' : 'Iniciar tarefa'}
               </Button>
             </Box>
 
@@ -363,7 +354,7 @@ export const AbrirChamado: React.FC = () => {
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
               <Alert severity="success" onClose={triggerCloseSuccessMessage}>
-                Chamado aberto com sucesso!
+                Tarefa inciada com sucesso!
               </Alert>
             </Snackbar>
             <Snackbar
@@ -373,7 +364,7 @@ export const AbrirChamado: React.FC = () => {
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
               <Alert severity="error" onClose={triggerCloseErrorMessage}>
-                Falha ao abrir o chamado
+                Falha ao inciar a tarefa
               </Alert>
             </Snackbar>
           </form>

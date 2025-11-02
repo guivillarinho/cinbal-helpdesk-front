@@ -13,9 +13,9 @@ import {
   Divider,
   Typography,
   Card,
-  Icon,
   IconButton,
-  Grid,
+  Button,
+  TextField,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { MdImage, MdDownload } from 'react-icons/md'
@@ -55,7 +55,7 @@ const ChamadoAbertoParaDetalhe: React.FC = () => {
   const { id } = useParams()
 
   const { data, isLoading } = useFetch(
-    `http://apihd.cinbal.com.br/helpdesk/${id}`,
+    `http://localhost:3545/helpdesk/${id}`,
   )
 
   const attachedFiles = data?.files
@@ -65,6 +65,14 @@ const ChamadoAbertoParaDetalhe: React.FC = () => {
   const { user } = useUserContext()
   const currentUser = user
 
+// NOVOS ESTADOS PARA O CRONÔMETRO
+  const [isTimerRunning, setIsTimerRunning] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
+
+  // O estado agora armazena um objeto com as partes do tempo
+  const [elapsedTime, setElapsedTime] = useState({ hours: 0, minutes: 0, seconds: 0 })
+  const [stoppedDuration, setStoppedDuration] = useState({ hours: 0, minutes: 0, seconds: 0 })
+
   const theme = useTheme()
   const { accountable } = useUserContext()
   const accountableRef = useRef(accountable)
@@ -72,6 +80,40 @@ const ChamadoAbertoParaDetalhe: React.FC = () => {
   useEffect(() => {
     accountableRef.current = accountable
   }, [accountable])
+
+  // NOVO EFEITO PARA O CRONÔMETRO (ATUALIZA A CADA SEGUNDO)
+  useEffect(() => {
+    // Não rode se a data não foi carregada ou se o timer está parado
+    if (!data?.createdAt || !isTimerRunning) {
+      return
+    }
+
+    // Define a hora de início
+    const startTime = new Date(data.createdAt).getTime()
+
+    // Cria um intervalo que roda a cada segundo
+    const intervalId = setInterval(() => {
+      const now = new Date().getTime()
+      
+      // Calcula a diferença total em segundos
+      let diffMs = now - startTime
+      if (diffMs < 0) diffMs = 0; // Garante que não seja negativo
+      let totalSeconds = Math.floor(diffMs / 1000)
+
+      // Converte segundos em Horas, Minutos e Segundos
+      const hours = Math.floor(totalSeconds / 3600)
+      totalSeconds %= 3600
+      const minutes = Math.floor(totalSeconds / 60)
+      const seconds = totalSeconds % 60
+
+      // Atualiza o estado
+      setElapsedTime({ hours, minutes, seconds })
+    }, 1000) // 1000ms = 1 segundo
+
+    // Função de limpeza do efeito
+    return () => clearInterval(intervalId)
+
+  }, [data?.createdAt, isTimerRunning]) // Dependências
 
   const publishedDateFormatted = () => {
     return format(new Date(data!.createdAt), "d 'de' LLLL 'às' HH:mm'h'", {
@@ -96,6 +138,38 @@ const ChamadoAbertoParaDetalhe: React.FC = () => {
         const fileName = file.filename
         fileDownload(response.data, fileName)
       })
+  }
+
+  // NOVA FUNÇÃO HELPER PARA FORMATAR O TEMPO
+  const formatDuration = (duration: { hours: number, minutes: number, seconds: number }) => {
+    const pad = (num: number) => num.toString().padStart(2, '0')
+    return `${pad(duration.hours)}:${pad(duration.minutes)}:${pad(duration.seconds)}`
+  }
+
+  // NOVAS FUNÇÕES DE CONTROLE DO CRONÔMETRO
+  const handleStopTimer = () => {
+    setIsTimerRunning(false)
+    setStoppedDuration(elapsedTime) // Salva o objeto de tempo atual
+  }
+
+  const handleStartTimer = () => {
+    setIsTimerRunning(true)
+    setIsEditing(false)
+  }
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing)
+  }
+
+  // Função para lidar com a mudança nos campos de edição
+  const handleEditDuration = (part: 'hours' | 'minutes' | 'seconds', value: string) => {
+    const numValue = parseInt(value, 10) || 0 // Converte para número, ou 0 se for inválido
+    
+    // Atualiza a parte específica (hora, minuto ou segundo) do tempo parado
+    setStoppedDuration(prev => ({
+      ...prev,
+      [part]: numValue
+    }))
   }
 
   return (
@@ -138,6 +212,88 @@ const ChamadoAbertoParaDetalhe: React.FC = () => {
           createdAtFormatted={publishedDateFormatted}
           createdAtFormattedRelativeToNow={publishedDateRelativeToNow}
         />
+        <Box
+          paddingY={2}
+          display="flex"
+          alignItems="center"
+          gap={1.5}
+          minHeight={50}
+        >
+          {/* --- ESTADO: RODANDO --- */}
+          {isTimerRunning && !isLoading && (
+            <>
+              <Typography variant="h6" sx={{ fontFamily: 'monospace' }}>
+                {formatDuration(elapsedTime)}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handleStopTimer}
+              >
+                Parar
+              </Button>
+            </>
+          )}
+
+          {/* --- ESTADO: PARADO (NÃO EDITANDO) --- */}
+          {!isTimerRunning && !isEditing && (
+            <>
+              <Typography variant="body2">Tempo Corrido:</Typography>
+              <Typography variant="h6" sx={{ fontFamily: 'monospace' }}>
+                {formatDuration(stoppedDuration)}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handleStartTimer}
+              >
+                Reiniciar
+              </Button>
+              <Button size="small" onClick={handleToggleEdit}>
+                Editar
+              </Button>
+            </>
+          )}
+
+          {/* --- ESTADO: PARADO (EDITANDO) --- */}
+          {!isTimerRunning && isEditing && (
+            <>
+              <TextField
+                label="HH"
+                type="number"
+                size="small"
+                value={stoppedDuration.hours}
+                onChange={(e) => handleEditDuration('hours', e.target.value)}
+                sx={{ width: 70 }}
+              />
+              <Typography sx={{ fontWeight: 'bold' }}>:</Typography>
+              <TextField
+                label="MM"
+                type="number"
+                size="small"
+                value={stoppedDuration.minutes}
+                onChange={(e) => handleEditDuration('minutes', e.target.value)}
+                sx={{ width: 70 }}
+              />
+              <Typography sx={{ fontWeight: 'bold' }}>:</Typography>
+              <TextField
+                label="SS"
+                type="number"
+                size="small"
+                value={stoppedDuration.seconds}
+                onChange={(e) => handleEditDuration('seconds', e.target.value)}
+                sx={{ width: 70 }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                onClick={handleToggleEdit}
+              >
+                Salvar
+              </Button>
+            </>
+          )}
+        </Box>
         <Divider />
 
         {data?.files && data?.files.length > 0 && (

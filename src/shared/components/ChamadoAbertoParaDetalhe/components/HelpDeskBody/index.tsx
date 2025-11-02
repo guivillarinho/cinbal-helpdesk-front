@@ -1,21 +1,16 @@
 import {
   Box,
-  Card,
-  CardContent,
   Chip,
   Divider,
   Grid,
-  IconButton,
-  Menu,
   Paper,
   Skeleton,
-  Tooltip,
   Typography,
 } from '@mui/material'
-import React, { memo, useCallback } from 'react'
+import React, { memo } from 'react'
 
-import { FaClipboard } from 'react-icons/fa'
-import { useUserContext } from '../../../../contexts/userContext'
+// import { FaClipboard } from 'react-icons/fa' // Removido
+// import { useUserContext } from '../../../../contexts/userContext' // Removido
 
 interface HelpDeskPostInformationProps {
   id: string | undefined
@@ -49,6 +44,8 @@ const HelpDeskBody: React.FC<HelpDeskPostInformationProps> = ({
   createdAtFormatted,
   createdAtFormattedRelativeToNow,
 }) => {
+  // Estado e callbacks para o Menu de Informações removidos
+  /*
   const [openInformation, setOpenInformation] =
     React.useState<null | HTMLElement>(null)
   const openCardInformation = Boolean(openInformation)
@@ -62,9 +59,11 @@ const HelpDeskBody: React.FC<HelpDeskPostInformationProps> = ({
   const handleCloseUserInformation = () => {
     setOpenInformation(null)
   }
+  */
 
-  const { user } = useUserContext()
-  const currentUser = user
+  // Contexto do usuário não é mais necessário aqui
+  // const { user } = useUserContext()
+  // const currentUser = user
 
   return (
     <>
@@ -81,86 +80,7 @@ const HelpDeskBody: React.FC<HelpDeskPostInformationProps> = ({
               <Typography variant="h5" sx={{ fontSize: '1rem' }}>
                 {author?.name}
               </Typography>
-              {currentUser?.role === 'admin' ? (
-                <Tooltip title="Informações">
-                  <IconButton onClick={openUserInformation}>
-                    <FaClipboard size={15} />
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                ''
-              )}
-              <Menu
-                id="basic-menu"
-                anchorEl={openInformation}
-                open={openCardInformation}
-                onClose={handleCloseUserInformation}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                <Card
-                  component={Box}
-                  elevation={0}
-                  border={'none'}
-                  color="#6F6F6F"
-                  sx={{
-                    width: '99%',
-                    height: 'max',
-                    display: 'flex',
-                    flex: '1',
-                    marginX: 'auto',
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h6" fontSize={15}>
-                      Usuário:
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: '0.8rem' }}
-                      color="text.secondary"
-                    >
-                      {author?.name}
-                    </Typography>
-                    <Typography variant="h6" fontSize={15}>
-                      Email:
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: '0.8rem' }}
-                      color="text.secondary"
-                    >
-                      {author?.email}
-                    </Typography>
-                    <Typography variant="h6" fontSize={15}>
-                      Setor:
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: '0.8rem' }}
-                      color="text.secondary"
-                    >
-                      {author?.sector}
-                    </Typography>
-                    <Typography variant="h6" fontSize={15}>
-                      Função:
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: '0.8rem' }}
-                      color="text.secondary"
-                    >
-                      {author?.position}
-                    </Typography>
-                    <Typography variant="h6" fontSize={15}>
-                      Ramal:
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: '0.8rem' }}
-                      color="text.secondary"
-                    >
-                      {author?.extension}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Menu>
+              {/* Bloco condicional de admin, Tooltip, IconButton e Menu removidos */}
             </Box>
           )}
 
